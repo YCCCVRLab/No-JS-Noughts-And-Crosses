@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lights Out Game - Pattern Based</title>
+</head>
+<body>
+    <h1>Lights Out Game</h1>
+    <p>Click any light to toggle it and its neighbors. Turn off all lights to win!</p>
+    
+    <!-- Each cell has its own radio button group with ON/OFF states -->
+    <!-- Cell 0 (top-left) -->
+    <input type="radio" name="cell0" id="c0-on" checked>
+    <input type="radio" name="cell0" id="c0-off">
+    
+    <!-- Cell 1 (top-center) -->
+    <input type="radio" name="cell1" id="c1-on">
+    <input type="radio" name="cell1" id="c1-off" checked>
+    
+    <!-- Cell 2 (top-right) -->
+    <input type="radio" name="cell2" id="c2-on" checked>
+    <input type="radio" name="cell2" id="c2-off">
+    
+    <!-- Cell 3 (middle-left) -->
+    <input type="radio" name="cell3" id="c3-on">
+    <input type="radio" name="cell3" id="c3-off" checked>
+    
+    <!-- Cell 4 (center) -->
+    <input type="radio" name="cell4" id="c4-on" checked>
+    <input type="radio" name="cell4" id="c4-off">
+    
+    <!-- Cell 5 (middle-right) -->
+    <input type="radio" name="cell5" id="c5-on">
+    <input type="radio" name="cell5" id="c5-off" checked>
+    
+    <!-- Cell 6 (bottom-left) -->
+    <input type="radio" name="cell6" id="c6-on" checked>
+    <input type="radio" name="cell6" id="c6-off">
+    
+    <!-- Cell 7 (bottom-center) -->
+    <input type="radio" name="cell7" id="c7-on">
+    <input type="radio" name="cell7" id="c7-off" checked>
+    
+    <!-- Cell 8 (bottom-right) -->
+    <input type="radio" name="cell8" id="c8-on" checked>
+    <input type="radio" name="cell8" id="c8-off">
+    
+    <div class="board">
+        <!-- Position 0: affects 0,1,3 -->
+        <div class="cell" data-pos="0">
+            <div class="light"></div>
+            <div class="click-layer">
+                <!-- When cell 0 is ON, clicking toggles to OFF and affects neighbors -->
+                <label class="toggle-0-1-3-on" for="c0-off"></label>
+                <!-- When cell 0 is OFF, clicking toggles to ON and affects neighbors -->
+                <label class="toggle-0-1-3-off" for="c0-on"></label>
+            </div>
+        </div>
+        
+        <!-- Position 1: affects 0,1,2,4 -->
+        <div class="cell" data-pos="1">
+            <div class="light"></div>
+            <div class="click-layer">
+                <label class="toggle-0-1-2-4-on" for="c1-off"></label>
+                <label class="toggle-0-1-2-4-off" for="c1-on"></label>
+            </div>
+        </div>
+        
+        <!-- Position 2: affects 1,2,5 -->
+        <div class="cell" data-pos="2">
+            <div class="light"></div>
+            <div class="click-layer">
+                <label class="toggle-1-2-5-on" for="c2-off"></label>
+                <label class="toggle-1-2-5-off" for="c2-on"></label>
+            </div>
+        </div>
+        
+        <!-- Position 3: affects 0,3,4,6 -->
+        <div class="cell" data-pos="3">
+            <div class="light"></div>
+            <div class="click-layer">
+                <label class="toggle-0-3-4-6-on" for="c3-off"></label>
+                <label class="toggle-0-3-4-6-off" for="c3-on"></label>
+            </div>
+        </div>
+        
+        <!-- Position 4: affects 1,3,4,5,7 -->
+        <div class="cell" data-pos="4">
+            <div class="light"></div>
+            <div class="click-layer">
+                <label class="toggle-1-3-4-5-7-on" for="c4-off"></label>
+                <label class="toggle-1-3-4-5-7-off" for="c4-on"></label>
+            </div>
+        </div>
+        
+        <!-- Position 5: affects 2,4,5,8 -->
+        <div class="cell" data-pos="5">
+            <div class="light"></div>
+            <div class="click-layer">
+                <label class="toggle-2-4-5-8-on" for="c5-off"></label>
+                <label class="toggle-2-4-5-8-off" for="c5-on"></label>
+            </div>
+        </div>
+        
+        <!-- Position 6: affects 3,6,7 -->
+        <div class="cell" data-pos="6">
+            <div class="light"></div>
+            <div class="click-layer">
+                <label class="toggle-3-6-7-on" for="c6-off"></label>
+                <label class="toggle-3-6-7-off" for="c6-on"></label>
+            </div>
+        </div>
+        
+        <!-- Position 7: affects 4,6,7,8 -->
+        <div class="cell" data-pos="7">
+            <div class="light"></div>
+            <div class="click-layer">
+                <label class="toggle-4-6-7-8-on" for="c7-off"></label>
+                <label class="toggle-4-6-7-8-off" for="c7-on"></label>
+            </div>
+        </div>
+        
+        <!-- Position 8: affects 5,7,8 -->
+        <div class="cell" data-pos="8">
+            <div class="light"></div>
+            <div class="click-layer">
+                <label class="toggle-5-7-8-on" for="c8-off"></label>
+                <label class="toggle-5-7-8-off" for="c8-on"></label>
+            </div>
+        </div>
+    </div>
+    
+    <div class="win-message">🎉 YOU WIN! 🎉</div>
+    
+    <style>
+        input[type="radio"] {
+            display: none;
+        }
+        
+        .board {
+            display: grid;
+            grid-template-columns: repeat(3, 80px);
+            grid-gap: 2px;
+            margin: 20px 0;
+        }
+        
+        .cell {
+            width: 80px;
+            height: 80px;
+            border: 2px solid #333;
+            position: relative;
+        }
+        
+        .light {
+            width: 100%;
+            height: 100%;
+            background-color: black;
+            transition: background-color 0.3s;
+        }
+        
+        .click-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .click-layer label {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+            display: none;
+        }
+        
+        /* Show lights as yellow when ON */
+        #c0-on:checked ~ .board .cell[data-pos="0"] .light { background-color: yellow; }
+        #c1-on:checked ~ .board .cell[data-pos="1"] .light { background-color: yellow; }
+        #c2-on:checked ~ .board .cell[data-pos="2"] .light { background-color: yellow; }
+        #c3-on:checked ~ .board .cell[data-pos="3"] .light { background-color: yellow; }
+        #c4-on:checked ~ .board .cell[data-pos="4"] .light { background-color: yellow; }
+        #c5-on:checked ~ .board .cell[data-pos="5"] .light { background-color: yellow; }
+        #c6-on:checked ~ .board .cell[data-pos="6"] .light { background-color: yellow; }
+        #c7-on:checked ~ .board .cell[data-pos="7"] .light { background-color: yellow; }
+        #c8-on:checked ~ .board .cell[data-pos="8"] .light { background-color: yellow; }
+        
+        /* Show appropriate click labels based on current state */
+        /* Position 0 click labels */
+        #c0-on:checked ~ .board .cell[data-pos="0"] .toggle-0-1-3-on { display: block; }
+        #c0-off:checked ~ .board .cell[data-pos="0"] .toggle-0-1-3-off { display: block; }
+        
+        /* Position 1 click labels */
+        #c1-on:checked ~ .board .cell[data-pos="1"] .toggle-0-1-2-4-on { display: block; }
+        #c1-off:checked ~ .board .cell[data-pos="1"] .toggle-0-1-2-4-off { display: block; }
+        
+        /* Position 2 click labels */
+        #c2-on:checked ~ .board .cell[data-pos="2"] .toggle-1-2-5-on { display: block; }
+        #c2-off:checked ~ .board .cell[data-pos="2"] .toggle-1-2-5-off { display: block; }
+        
+        /* Position 3 click labels */
+        #c3-on:checked ~ .board .cell[data-pos="3"] .toggle-0-3-4-6-on { display: block; }
+        #c3-off:checked ~ .board .cell[data-pos="3"] .toggle-0-3-4-6-off { display: block; }
+        
+        /* Position 4 click labels */
+        #c4-on:checked ~ .board .cell[data-pos="4"] .toggle-1-3-4-5-7-on { display: block; }
+        #c4-off:checked ~ .board .cell[data-pos="4"] .toggle-1-3-4-5-7-off { display: block; }
+        
+        /* Position 5 click labels */
+        #c5-on:checked ~ .board .cell[data-pos="5"] .toggle-2-4-5-8-on { display: block; }
+        #c5-off:checked ~ .board .cell[data-pos="5"] .toggle-2-4-5-8-off { display: block; }
+        
+        /* Position 6 click labels */
+        #c6-on:checked ~ .board .cell[data-pos="6"] .toggle-3-6-7-on { display: block; }
+        #c6-off:checked ~ .board .cell[data-pos="6"] .toggle-3-6-7-off { display: block; }
+        
+        /* Position 7 click labels */
+        #c7-on:checked ~ .board .cell[data-pos="7"] .toggle-4-6-7-8-on { display: block; }
+        #c7-off:checked ~ .board .cell[data-pos="7"] .toggle-4-6-7-8-off { display: block; }
+        
+        /* Position 8 click labels */
+        #c8-on:checked ~ .board .cell[data-pos="8"] .toggle-5-7-8-on { display: block; }
+        #c8-off:checked ~ .board .cell[data-pos="8"] .toggle-5-7-8-off { display: block; }
+        
+        /* Win condition - show win message when all lights are off */
+        #c0-off:checked ~ #c1-off:checked ~ #c2-off:checked ~ #c3-off:checked ~ #c4-off:checked ~ #c5-off:checked ~ #c6-off:checked ~ #c7-off:checked ~ #c8-off:checked ~ .win-message {
+            display: block;
+            font-size: 24px;
+            text-align: center;
+            color: green;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+        
+        .win-message {
+            display: none;
+        }
+    </style>
+    
+    <h2>The Pattern Approach:</h2>
+    <p>This approach uses the neighbor pattern cleverly:</p>
+    <ul>
+        <li>Each cell has its own radio button group (ON/OFF)</li>
+        <li>Each position has labels that toggle itself and neighbors</li>
+        <li>CSS shows/hides the appropriate labels based on current cell states</li>
+        <li>Much more elegant than pre-calculating all 512 states!</li>
+    </ul>
+    
+    <p><strong>The challenge:</strong> CSS can only change ONE radio button per click, but Lights Out needs to toggle multiple cells simultaneously. This is still the fundamental limitation.</p>
+</body>
+</html>
