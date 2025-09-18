@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lights Out Game - Working Demo</title>
+</head>
+<body>
+    <h1>Lights Out Game</h1>
+    <p>Click any light to toggle it and its neighbors. This demo shows a few pre-calculated states.</p>
+    
+    <!-- Game states as radio buttons -->
+    <input type="radio" name="gamestate" id="state1" checked>  <!-- 101010101 -->
+    <input type="radio" name="gamestate" id="state2">          <!-- 011110101 -->
+    <input type="radio" name="gamestate" id="state3">          <!-- 111010101 -->
+    <input type="radio" name="gamestate" id="state4">          <!-- 100110101 -->
+    <input type="radio" name="gamestate" id="state5">          <!-- 000000000 WIN! -->
+    
+    <div class="board">
+        <!-- State 1: 101010101 -->
+        <div class="game-state" id="game1">
+            <div class="grid">
+                <div class="cell on"><label for="state2"></label></div>
+                <div class="cell off"><label for="state3"></label></div>
+                <div class="cell on"><label for="state4"></label></div>
+                <div class="cell off"><label></label></div>
+                <div class="cell on"><label></label></div>
+                <div class="cell off"><label></label></div>
+                <div class="cell on"><label></label></div>
+                <div class="cell off"><label></label></div>
+                <div class="cell on"><label></label></div>
+            </div>
+        </div>
+        
+        <!-- State 2: 011110101 -->
+        <div class="game-state" id="game2">
+            <div class="grid">
+                <div class="cell off"><label for="state1"></label></div>
+                <div class="cell on"><label></label></div>
+                <div class="cell on"><label></label></div>
+                <div class="cell on"><label></label></div>
+                <div class="cell on"><label></label></div>
+                <div class="cell off"><label></label></div>
+                <div class="cell on"><label></label></div>
+                <div class="cell off"><label></label></div>
+                <div class="cell on"><label></label></div>
+            </div>
+        </div>
+        
+        <!-- State 3: 111010101 -->
+        <div class="game-state" id="game3">
+            <div class="grid">
+                <div class="cell on"><label></label></div>
+                <div class="cell on"><label for="state1"></label></div>
+                <div class="cell on"><label></label></div>
+                <div class="cell off"><label></label></div>
+                <div class="cell on"><label></label></div>
+                <div class="cell off"><label></label></div>
+                <div class="cell on"><label></label></div>
+                <div class="cell off"><label></label></div>
+                <div class="cell on"><label></label></div>
+            </div>
+        </div>
+        
+        <!-- State 4: 100110101 -->
+        <div class="game-state" id="game4">
+            <div class="grid">
+                <div class="cell on"><label></label></div>
+                <div class="cell off"><label></label></div>
+                <div class="cell off"><label for="state1"></label></div>
+                <div class="cell off"><label></label></div>
+                <div class="cell on"><label></label></div>
+                <div class="cell on"><label></label></div>
+                <div class="cell on"><label></label></div>
+                <div class="cell off"><label></label></div>
+                <div class="cell on"><label></label></div>
+            </div>
+        </div>
+        
+        <!-- State 5: WIN STATE 000000000 -->
+        <div class="game-state" id="game5">
+            <div class="grid">
+                <div class="cell off"><label></label></div>
+                <div class="cell off"><label></label></div>
+                <div class="cell off"><label></label></div>
+                <div class="cell off"><label></label></div>
+                <div class="cell off"><label></label></div>
+                <div class="cell off"><label></label></div>
+                <div class="cell off"><label></label></div>
+                <div class="cell off"><label></label></div>
+                <div class="cell off"><label></label></div>
+            </div>
+            <div class="win-message">🎉 YOU WIN! 🎉</div>
+        </div>
+    </div>
+    
+    <button type="button" onclick="document.getElementById('state1').checked = true">Reset Game</button>
+    
+    <style>
+        input[type="radio"] {
+            display: none;
+        }
+        
+        .game-state {
+            display: none;
+        }
+        
+        .board {
+            margin: 20px 0;
+        }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(3, 80px);
+            grid-gap: 2px;
+            margin-bottom: 20px;
+        }
+        
+        .cell {
+            width: 80px;
+            height: 80px;
+            border: 2px solid #333;
+            position: relative;
+            cursor: pointer;
+        }
+        
+        .cell.on {
+            background-color: yellow;
+        }
+        
+        .cell.off {
+            background-color: black;
+        }
+        
+        .cell label {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+        
+        .win-message {
+            font-size: 24px;
+            text-align: center;
+            color: green;
+            font-weight: bold;
+        }
+        
+        /* Show the correct game state */
+        #state1:checked ~ .board #game1 { display: block; }
+        #state2:checked ~ .board #game2 { display: block; }
+        #state3:checked ~ .board #game3 { display: block; }
+        #state4:checked ~ .board #game4 { display: block; }
+        #state5:checked ~ .board #game5 { display: block; }
+    </style>
+    
+    <h2>How it works:</h2>
+    <p>This demonstrates the concept with just 5 pre-calculated game states. Each state is a complete HTML representation of the board, and clicking certain lights transitions to other states.</p>
+    
+    <p><strong>To create a full Lights Out game this way, you would need:</strong></p>
+    <ul>
+        <li>512 radio buttons (one for each possible 3×3 binary state)</li>
+        <li>512 complete board layouts in HTML</li>
+        <li>Each board having 9 labels pointing to the correct next states</li>
+        <li>CSS to show only the current state</li>
+    </ul>
+    
+    <p>While massive, it's theoretically possible with pure HTML/CSS!</p>
+</body>
+</html>
