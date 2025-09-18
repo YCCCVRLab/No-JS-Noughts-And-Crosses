@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lights Out Game - Multi-Label Approach</title>
+</head>
+<body>
+    <h1>Lights Out Game</h1>
+    <p>Click any light to toggle it and its neighbors. Turn off all lights to win!</p>
+    
+    <!-- Each cell has ON/OFF radio buttons -->
+    <input type="radio" name="cell0" id="c0-on" checked>
+    <input type="radio" name="cell0" id="c0-off">
+    <input type="radio" name="cell1" id="c1-on">
+    <input type="radio" name="cell1" id="c1-off" checked>
+    <input type="radio" name="cell2" id="c2-on" checked>
+    <input type="radio" name="cell2" id="c2-off">
+    <input type="radio" name="cell3" id="c3-on">
+    <input type="radio" name="cell3" id="c3-off" checked>
+    <input type="radio" name="cell4" id="c4-on" checked>
+    <input type="radio" name="cell4" id="c4-off">
+    <input type="radio" name="cell5" id="c5-on">
+    <input type="radio" name="cell5" id="c5-off" checked>
+    <input type="radio" name="cell6" id="c6-on" checked>
+    <input type="radio" name="cell6" id="c6-off">
+    <input type="radio" name="cell7" id="c7-on">
+    <input type="radio" name="cell7" id="c7-off" checked>
+    <input type="radio" name="cell8" id="c8-on" checked>
+    <input type="radio" name="cell8" id="c8-off">
+    
+    <div class="board">
+        <!-- Each cell position -->
+        <div class="cell" data-pos="0">
+            <div class="light"></div>
+            <!-- Multiple overlapping labels for position 0 click -->
+            <!-- Label for toggling cell 0 itself -->
+            <label class="label-0-self" for="c0-off"></label>
+            <label class="label-0-self-off" for="c0-on"></label>
+            <!-- Label for toggling cell 1 (right neighbor) -->
+            <label class="label-0-right" for="c1-off"></label>
+            <label class="label-0-right-off" for="c1-on"></label>
+            <!-- Label for toggling cell 3 (bottom neighbor) -->
+            <label class="label-0-bottom" for="c3-off"></label>
+            <label class="label-0-bottom-off" for="c3-on"></label>
+        </div>
+        
+        <div class="cell" data-pos="1">
+            <div class="light"></div>
+        </div>
+        
+        <div class="cell" data-pos="2">
+            <div class="light"></div>
+        </div>
+        
+        <div class="cell" data-pos="3">
+            <div class="light"></div>
+        </div>
+        
+        <div class="cell" data-pos="4">
+            <div class="light"></div>
+        </div>
+        
+        <div class="cell" data-pos="5">
+            <div class="light"></div>
+        </div>
+        
+        <div class="cell" data-pos="6">
+            <div class="light"></div>
+        </div>
+        
+        <div class="cell" data-pos="7">
+            <div class="light"></div>
+        </div>
+        
+        <div class="cell" data-pos="8">
+            <div class="light"></div>
+        </div>
+    </div>
+    
+    <style>
+        input[type="radio"] {
+            display: none;
+        }
+        
+        .board {
+            display: grid;
+            grid-template-columns: repeat(3, 80px);
+            grid-gap: 2px;
+            margin: 20px 0;
+        }
+        
+        .cell {
+            width: 80px;
+            height: 80px;
+            border: 2px solid #333;
+            position: relative;
+        }
+        
+        .light {
+            width: 100%;
+            height: 100%;
+            background-color: black;
+            transition: background-color 0.3s;
+        }
+        
+        /* Show lights as yellow when ON */
+        #c0-on:checked ~ .board .cell[data-pos="0"] .light { background-color: yellow; }
+        #c1-on:checked ~ .board .cell[data-pos="1"] .light { background-color: yellow; }
+        #c2-on:checked ~ .board .cell[data-pos="2"] .light { background-color: yellow; }
+        #c3-on:checked ~ .board .cell[data-pos="3"] .light { background-color: yellow; }
+        #c4-on:checked ~ .board .cell[data-pos="4"] .light { background-color: yellow; }
+        #c5-on:checked ~ .board .cell[data-pos="5"] .light { background-color: yellow; }
+        #c6-on:checked ~ .board .cell[data-pos="6"] .light { background-color: yellow; }
+        #c7-on:checked ~ .board .cell[data-pos="7"] .light { background-color: yellow; }
+        #c8-on:checked ~ .board .cell[data-pos="8"] .light { background-color: yellow; }
+        
+        /* Labels for position 0 */
+        .cell[data-pos="0"] label {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+            display: none;
+        }
+        
+        /* Show the correct label for cell 0 based on its current state */
+        #c0-on:checked ~ .board .cell[data-pos="0"] .label-0-self { display: block; }
+        #c0-off:checked ~ .board .cell[data-pos="0"] .label-0-self-off { display: block; }
+        
+        /* The fundamental problem remains: we can only click ONE label at a time */
+        /* We cannot make multiple labels trigger simultaneously */
+    </style>
+    
+    <h2>The Fundamental Problem:</h2>
+    <p>Even with the pattern approach, we hit the same wall:</p>
+    <ul>
+        <li>HTML can only process ONE label click at a time</li>
+        <li>We cannot make multiple labels trigger simultaneously</li>
+        <li>Lights Out requires toggling multiple cells in a single action</li>
+        <li>This requires programming logic that HTML/CSS cannot provide</li>
+    </ul>
+    
+    <p><strong>Possible solutions:</strong></p>
+    <ol>
+        <li><strong>Pre-calculate all states</strong> (512 radio buttons + massive HTML)</li>
+        <li><strong>Use JavaScript</strong> (breaks the HTML-only requirement)</li>
+        <li><strong>Use server-side processing</strong> (requires backend code)</li>
+        <li><strong>Accept that it's impossible</strong> with pure HTML/CSS</li>
+    </ol>
+    
+    <p>The tic-tac-toe game works because it only needs to SET states, not simultaneously TOGGLE multiple states. That's the key difference!</p>
+</body>
+</html>
