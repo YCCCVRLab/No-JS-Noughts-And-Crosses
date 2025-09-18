@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lights Out Game - Pure HTML/CSS</title>
+</head>
+<body>
+    <h1>Lights Out Game</h1>
+    <p>Click any light to toggle it and its neighbors. Turn off all lights to win!</p>
+    
+    <!-- Game state radio buttons - each position can be ON or OFF -->
+    <input type="radio" name="state" id="state-101010101" checked>
+    
+    <!-- All possible states after clicking position 0 (top-left) -->
+    <input type="radio" name="state" id="state-011110101">
+    
+    <!-- All possible states after clicking position 1 (top-center) -->
+    <input type="radio" name="state" id="state-111010101">
+    
+    <!-- All possible states after clicking position 2 (top-right) -->
+    <input type="radio" name="state" id="state-100110101">
+    
+    <!-- And so on for all 512 possible states... -->
+    <!-- For demo purposes, I'll include just a few key states -->
+    
+    <div class="game-board">
+        <div class="cell pos0">
+            <div class="light"></div>
+            <label class="click-area" data-click="0"></label>
+        </div>
+        <div class="cell pos1">
+            <div class="light"></div>
+            <label class="click-area" data-click="1"></label>
+        </div>
+        <div class="cell pos2">
+            <div class="light"></div>
+            <label class="click-area" data-click="2"></label>
+        </div>
+        <div class="cell pos3">
+            <div class="light"></div>
+            <label class="click-area" data-click="3"></label>
+        </div>
+        <div class="cell pos4">
+            <div class="light"></div>
+            <label class="click-area" data-click="4"></label>
+        </div>
+        <div class="cell pos5">
+            <div class="light"></div>
+            <label class="click-area" data-click="5"></label>
+        </div>
+        <div class="cell pos6">
+            <div class="light"></div>
+            <label class="click-area" data-click="6"></label>
+        </div>
+        <div class="cell pos7">
+            <div class="light"></div>
+            <label class="click-area" data-click="7"></label>
+        </div>
+        <div class="cell pos8">
+            <div class="light"></div>
+            <label class="click-area" data-click="8"></label>
+        </div>
+    </div>
+    
+    <style>
+        /* Hide all radio buttons */
+        input[type="radio"] {
+            display: none;
+        }
+        
+        .game-board {
+            display: grid;
+            grid-template-columns: repeat(3, 80px);
+            grid-gap: 2px;
+            margin: 20px 0;
+        }
+        
+        .cell {
+            width: 80px;
+            height: 80px;
+            border: 2px solid #333;
+            position: relative;
+        }
+        
+        .light {
+            width: 100%;
+            height: 100%;
+            background-color: black;
+            transition: background-color 0.3s;
+        }
+        
+        .click-area {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+        
+        /* Initial state: 101010101 */
+        #state-101010101:checked ~ .game-board .pos0 .light { background-color: yellow; }
+        #state-101010101:checked ~ .game-board .pos1 .light { background-color: black; }
+        #state-101010101:checked ~ .game-board .pos2 .light { background-color: yellow; }
+        #state-101010101:checked ~ .game-board .pos3 .light { background-color: black; }
+        #state-101010101:checked ~ .game-board .pos4 .light { background-color: yellow; }
+        #state-101010101:checked ~ .game-board .pos5 .light { background-color: black; }
+        #state-101010101:checked ~ .game-board .pos6 .light { background-color: yellow; }
+        #state-101010101:checked ~ .game-board .pos7 .light { background-color: black; }
+        #state-101010101:checked ~ .game-board .pos8 .light { background-color: yellow; }
+        
+        /* Set up click targets for initial state */
+        #state-101010101:checked ~ .game-board .click-area[data-click="0"] { 
+            pointer-events: all;
+        }
+        
+        /* After clicking position 0: 011110101 */
+        #state-011110101:checked ~ .game-board .pos0 .light { background-color: black; }
+        #state-011110101:checked ~ .game-board .pos1 .light { background-color: yellow; }
+        #state-011110101:checked ~ .game-board .pos2 .light { background-color: yellow; }
+        #state-011110101:checked ~ .game-board .pos3 .light { background-color: yellow; }
+        #state-011110101:checked ~ .game-board .pos4 .light { background-color: yellow; }
+        #state-011110101:checked ~ .game-board .pos5 .light { background-color: black; }
+        #state-011110101:checked ~ .game-board .pos6 .light { background-color: yellow; }
+        #state-011110101:checked ~ .game-board .pos7 .light { background-color: black; }
+        #state-011110101:checked ~ .game-board .pos8 .light { background-color: yellow; }
+        
+        /* The fundamental problem: We need labels that change their 'for' attribute */
+        /* based on current state, but HTML/CSS cannot do this */
+        
+        /* We would need something like: */
+        /* #state-101010101:checked ~ .game-board .click-area[data-click="0"] { for: "state-011110101"; } */
+        /* But CSS cannot change HTML attributes */
+    </style>
+    
+    <h2>The Challenge:</h2>
+    <p>While the tic-tac-toe game works brilliantly with radio buttons because:</p>
+    <ul>
+        <li>Each cell only needs to SET a state (X or O)</li>
+        <li>Turn management is handled by alternating which labels are visible</li>
+        <li>Win detection is purely visual styling</li>
+    </ul>
+    
+    <p>Lights Out is fundamentally different because:</p>
+    <ul>
+        <li>Each click must TOGGLE multiple cells simultaneously</li>
+        <li>We need labels that point to different radio buttons based on current game state</li>
+        <li>CSS cannot change HTML attributes like the 'for' attribute of labels</li>
+    </ul>
+    
+    <p><strong>The solution would require:</strong></p>
+    <ul>
+        <li>512 radio buttons (one for each possible game state)</li>
+        <li>512 × 9 labels (each state needs 9 clickable areas)</li>
+        <li>Each label pointing to the correct next state</li>
+        <li>Massive CSS to show/hide the correct labels for each state</li>
+    </ul>
+    
+    <p>While theoretically possible, it would be an enormous amount of HTML/CSS!</p>
+</body>
+</html>
